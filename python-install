@@ -42,64 +42,8 @@ http://blog.csdn.net/hekejun19861107/article/details/6411576
       5.安装环境 
   apt-get install -y wget sudo htop vim curl zip unzip   
 第二步升级python
-先在python2下安装supervisor
-由于supervisor只支持python2.*,在python3.*下的安装方法如下：
-下载supervisor安装包
-解压supervisor
-进入supervisor目录文件夹
-python2 setup.py install
-
-tar -xvf supervisor-3.1.3.tar.gz
-cd /root/supervisor-3.1.3
-python2 setup.py install
-
-
-Python缺少zlib解决办法  
-先去http://www.zlib.net/下载最新版本的zlib源码文件，如：http://zlib.net/zlib-1.2.8.tar.gz
-wget -P /mnt/tool http://zlib.net/zlib-1.2.8.tar.gz
-安装zlib:
-tar -xvf zlib-1.2.8.tar.gz
-cd zlib-1.2.8
-
-（建议默认路径安装）
-
-./configure
-make
-make install
-
-zlib安装完后，libz.a在/usr/local/lib/,zlib.h文件在/usr/include （opensuse中zlib.h默认放在/usr/local/include/中）
-
-进入Python源码文件目录(比如/mnt/tool/Python-3.4.2)，重新编译Python
-
-./configure --prefix=/home/program/python3 --with-zlib=/usr/include
-或者：
-./configure --prefix=/home/program/python3 --with-zlib-dir=/usr/local/lib
-
-都可以完成python对zlib库的支持，在python源码中直接import zlib即可使用zlib了。
-安装setuptools
-wget -c https://pypi.python.org/packages/source/s/setuptools/setuptools-7.0.tar.gz 
-(wget -P /mnt/tool  
-https://pypi.python.org/packages/source/s/setuptools/setuptools-7.0.tar.gz)
-tar -xvf setuptools-7.0.tar.gz
-cd setuptools-7.0
-python setup.py build
-python setup.py install
-
-
-Wget "https://bitbucket.org/pypa/setuptools/get/default.tar.gz#egg=setuptools-dev" --no-check-certificate
-tar -xvf default.tar.gz
-cd /root/pypa-setuptools-dd8bb6bb99e0//依据你的解压目录名而定
-python setup.py install
-安装完成之后，在执行你的安装程序命令（python setup.py install）即可。
-安装ssl
-wget -c https://www.openssl.org/source/openssl-1.0.1g.tar.gz
-apt-get libssl-dev 
-tar -xvf /mnt/tool/openssl-1.0.1g.tar.gz /mnt/tool 
-#./config shared zlib && make && make install
-
-
-
-如install.h所说；
+先在python2下安装supervisor 
+安装setuptools 
 http://www.cnblogs.com/lanxuezaipiao/archive/2012/10/21/2732864.html
 https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
 现在版本基本上是3.4.2
@@ -116,27 +60,7 @@ make install
 装完以后可以输入 python 查python的版本号
 测试python：
 python -m test
-
-特别地，需要建立debian系统与python环境的软链接
-此时没有覆盖老版本，再将原来/usr/bin/python链接改为别的名字
-mv /usr/bin/python /usr/bin/python_old
-再建立新版本python的链接
-ln -s /usr/local/python34/bin/python3  /usr/bin/python
-值得注意的是，当系统命令输入 echo $PATH的时候会出现一连串的由一系列以冒号分隔的目录名组成。如：/usr/local/bin:/bin:/usr/bin。当我们执行程时，shell自动跟据PATH变量的值去搜索该程序。
-	当然咯，在/usr/bin/python文件夹下面有很多的命令，比如pip,python2.7，这个主要是对应的情形下用到相关的命令即可。
-
-编译python 3.4 时卡住了，
-Ignoring ensurepip failure: pip 1.5.6 requires SSL/TLS 
-后来发现原来是系统缺两个依赖的包
-libssl-dev 
-Openssl
-先升级系统：
-apt-get update
-apt-get upgrade
-然后
-sudo apt-get install libssl-dev
-sudo apt-get install openssl
-再编译python
+ 
 第三步安装pip 
 官网下载最新版本的pip1.5.6的安装包，找到相关目录，然后python setup.py install
 (tar -xvf /mnt/tool/pip-1.5.6.tar.gz -C /mnt/tool)
@@ -182,54 +106,7 @@ cmd-- pip install sqlalchemy
 pip install requests
 sudo apt-get install python3-pil
 安装image 图片操作，验证码
-pip install image
-报错:
-jpeg is required unless explicitly disabled using --disable-jpeg, aborting
-
-解决（官方文档解决， https://pillow.readthedocs.org/en/3.0.0/installation.html#linux-installation）
-sudo apt-get install libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
-或者：
-sudo apt-get build-dep python-imaging
-sudo apt-get install libjpeg8 libjpeg62-dev libfreetype6 libfreetype6-dev
-
-pip install Pillow出现如下问题：
-The headers or library files could not be found for jpeg,a required dependency when compiling Pillow from source.
-首先安装libjpeg62-turbo-dev_1.3.1-12_amd64.deb ：
-dpkg -i libjpeg62-turbo-dev_1.3.1-12_amd64.deb
-再安装libjpeg-dev_1.3.1-12_all.deb
-https://pkgs.org/download/libjpeg-dev
-https://packages.debian.org/jessie/libjpeg62-turbo-dev
-
-下载freetype-2.4.11.tar.gz
-https://www.freetype.org/download.html
-tar –xvf freetype-2.4.11.tar.gz
-
-./configure 
-make
-make install
-
-apt-get install libfreetype6-dev
- pip install wheel
-pip uninstall Pillow
-pip install --use-wheel Pillow
-
-
-安装rsa加密
-pip install rsa
-pip  install tablib
-pip  install xlwt
-pip install xlrd
-
-安装suds-jurko 用来解析webservice  短信发送用到
-pip install suds-jurko
-
-或者：
-wget https://pypi.python.org/packages/source/s/suds-jurko/suds-jurko-0.6.tar.bz2#md5=1309e9bc2454aa3434041f0a24ae4e11
-
-tar -xvf suds-jurko-0.6.tar.bz2
-
-cd /root/suds-jurko-0.6
-python setup.py install
+pip install image    
 
 第六步安装nginx
 http://nginx.org/en/download.html
@@ -237,51 +114,14 @@ tar -xvf  nginx-1.11.8.tar.gz
 ./configure 
 make
 make install
- 
-如果出现“[emerg] 10464#0: unknown directive "ssl" in /usr/local/nginx-0.6.32/conf/nginx.conf:74”则说明没有将ssl模块编译进nginx，在configure的时候加上“--with-http_ssl_module”即可
-先安装好openssl,解压nginx 然后进入目录
-cd /var/soft/ nginx-1.11.8
-./configure --prefix=/usr/local/nginx --with-http_stub_status_module  --with-http_ssl_module
-make
-make install
-安装 nginx 时出现 make: *** 没有规则可以创建“default”需要的目标“build” 提示，看nginx configure 时的提示是因为pcre没安装的问题，所以安装一下
-在 ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/ 下载 pcre 
-tar xvzf pcre-8.40.tar.gz
-cd nginx-1.11.8
-./configure --prefix=/usr/local/nginx --with-pcre=/var/soft/pcre-8.40
-make && make install
-配置文件：/usr/local/nginx/conf
-wget http://nginx.org/keys/nginx_signing.key
-sudo apt-key add nginx_signing.key
-cat nginx_source | cat > /etc/apt/sources.list.d/nginx.list
-apt-get update
-apt-get install -y nginx
-nginx –v
-/usr/local/nginx/sbin/nginx -v
-
-(/server/software/nginx/sbin/nginx –v
-http://tengine.taobao.org/download.html)
-
-service nginx restart
-具体配置可参照
-http://demo.pythoner.com/itt2zh/ch8.html#ch8-2-1
+  
 
 配置文件的存放路径在 /etc/nginx/conf.d
 把nginx加入到系统服务，并开机自己启动的方法
 将shell脚本放入到 /etc/init.d/中，并执行下列命令
 1：chmod +x /etc/init.d/nginx （设置可执行权限）
 2：chkconfig --add nginx （添加系统服务）
-
-ps -ef |grep nginx
-看是否存在主进程和php-fpm子进程
-nginx: master process
-00:00:00 php-fpm:xxx
-2.查看nginx监听的端口是否存在
-[root@localhost ~]# netstat -tlnup|grep nginx
-tcp        0      0 0.0.0.0:80                  0.0.0.0:*                   LISTEN      12891/nginx
-3.如果nginx已经做成服务
-[root@localhost ~]# service nginx status
-nginx (pid  12891) 正在运行...
+ 
 
 第七步 supervisor配置
 由于supervisor只支持python2.*,在python3.*下的安装方法如下：
@@ -307,74 +147,11 @@ supervisorctl 用于管理员向后台管理程序发送启动/重启/停止等�
 
 安装完成后
 输入supervisord 再输入version即可看到版本号
-supervisord --version
-值得注意的是，作为shell脚本的执行命令，supervisor的命令路径是在 /usr/local/bin，
-相关的配置文件则放在 /etc/supervisord.conf  其中的内容解读可参考
-http://demo.pythoner.com/itt2zh/ch8.html#ch8-2-1
-安装与配置：
-http://jingyan.baidu.com/article/375c8e198d1b1425f2a2290c.html
-http://blog.beginman.cn/blog/129/
-配置
-我们可以看到启动脚本中，其实默认写了一个启动参数 -c /etc/supervisord.conf ，这里我们可以通过Supervisor附送的贴心的小脚本生成默认的配置文件 先创建/etc/supervisor文件夹，再创建/var/log/supervisor/日志文件夹，然后执行echo_supervisord_conf >/etc/supervisor/supervisord.conf 
-我们可以根据需要修改里面的配置。我这里，每个不同的项目，使用了一个单独的配置的文件，放置在 /etc/supervisor/ 下面，于是修改/etc/supervisord.conf ，加上如下内容：
-	[include]
-files = /etc/supervisor/conf.d/*.conf
-修改完后，我们便可以将项目的配置文件命名为 .conf 放置在/etc/supervisor/ 下面即可。
-supervisorctl help
-unix:///tmp/supervisor.sock no such file
-运行supervisorctl时保错，
-修改/etc/supervisor/supervisor.conf文件
-将file=/var/run/supervisor.sock 修改为/tmp/supervisor.sock
-重启supervisor服务即可
-Error: Another program is already listening on a port that one of our HTTP servers is configured to use.Shut this program down first before starting supervisord.
-解决方法：
- sudo unlink /tmp/supervisor.sock
-$ ps -ef | grep supervisord
-$ sudo kill -9 5622
-$ supervisord
-error: <class 'socket.error'>, [Errno 111] Connection refused: file: /usr/lib64/python2.6/socket.py line: 567
-You have to start supervisord before you can use supervisorctl. In my case:
-sudo supervisord -c /etc/supervisor/supervisord.conf
-sudo supervisorctl -c /etc/supervisor/supervisord.conf
-即通过配置文件来启动supervisor，然后再使用supervisorctl。所以我执行命令：
-# /usr/local/bin/supervisord –c /etc/supervisor/supervisord.conf
-其实到这里我的问题已经解决了，无需继续使用命令：supervisorct start yourappname开启tornado项目。
-[unix_http_server]
-file=/var/run/supervisor.sock   ; (the path to the socket file)
-chmod=0700                       ; sockef file mode (default 0700)
-
-[inet_http_server]         ; inet (TCP) server disabled by default
-port=9001        ; (ip_address:port specifier, *:port for all iface)
-username=tainiulicai             ; (default is no username (open server))
-password=tainiup@ssw0rd               ; (deniufault is no password (open server))
-
-[supervisord]
-logfile=/var/log/supervisor/supervisord.log ; (main log file;default $CWD/supervisord.log)
-pidfile=/var/run/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
-childlogdir=/var/log/supervisor            ; ('AUTO' child log dir, default $TEMP)
-
-; the below section must remain in the config file for RPC
-; (supervisorctl/web interface) to work, additional interfaces may be
-; added by defining them in separate rpcinterface: sections
-[rpcinterface:supervisor]
-supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
-
-[supervisorctl]
-serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
-;http_port=127.0.0.1:9001 ; (alternately, ip_address:port specifies AF_INET)
-
-; The [include] section can just contain the "files" setting.  This
-; setting can list multiple files (separated by whitespace or
-; newlines).  It can also contain wildcards.  The filenames are
-; interpreted as relative to this file.  Included files *cannot*
-; include files themselves.
-
-[include]
-files = /etc/supervisor/conf.d/*.conf
+supervisord --version 
  
 第八步配置站点及验证
-•	将站点文件放在var/cpblm.www里
-•	在/etc/supervisor/conf.d/cpblm.conf  配置站点文件
+•	将站点文件放在var/aaa.www里
+•	在/etc/supervisor/conf.d/aaa.conf  配置站点文件
 •	在/etc/nginx/conf.d/default.conf 配置nginx反向代理文件
 •	在/etc/rc.local文件里配置supervisor自启动 
 /usr/local/bin/supervisord  -c /etc/supervisor/supervisord.conf
@@ -387,7 +164,7 @@ mysql –version
 dpkg -l mysql-server
 安装完成后可以通过本地的workbench进行连接测试
 Web服务器连接数据库服务器设置：
-grant all on *.* to jinfax_root@"%" identified by "Jinfax2017p@ssw0rd"; 
+grant all on *.* to user@"%" identified by "password"; 
 flush privileges;
 msyql默认的bind-address是127.0.0.1，这样的话就算你创建的用户有可以remote访问的话 也不能通过-h 来访问，mysql只接受localhost，错误提示为：ERROR 2003 (HY000): Can't connect to MySQL server on 'localhost' (10061)
 
@@ -397,15 +174,7 @@ msyql默认的bind-address是127.0.0.1，这样的话就算你创建的用户有
 问题：Could not connect the SSH Tunnel 
 Authentication error, unhandled exception caught in in 
 tunnel manager, please refer to logs for details 
-
-sudo apt-get install libffi-dev
-直接说解决步骤吧: 或者TCP/IP连接
-1.去网页https://github.com/paramiko/paramiko/releases下载最新的paramiko包最新的2.1.1版本并解压tar -xvf
-2.用sudo apt-get --purge remove python-paramiko彻底清除旧版本的paramiko
-3.进入解压好的paramiko路径并使用sudo python setup.py install来安装paramiko
-4.注意：安装的过程中下载相关依赖包时可能会出现404，没关系我们可以去http://packages.ubuntu.com/zh-cn/xenial/amd64/libzip4/download中搜索并下载需 要的依赖包并利用sudo dpkg -i 来手动安装。
-5.安装完成后，重装Mysql Workbench就可以正常使用了。
-
+ 
 自动备份：
 http://blog.csdn.net/hzbigdog/article/details/38434667
 •	先创建shell脚本，放置在/etc/cron.daily/mysql-backup(创建脚本：nano /etc/cron.daily/mysql-backup)
@@ -420,6 +189,5 @@ http://blog.csdn.net/hzbigdog/article/details/38434667
 代码如下：
 service cron start
 crontab -u root /usr/local/mytask/crontab
-
 
 crontab –l –u root  查询定时任务列表
