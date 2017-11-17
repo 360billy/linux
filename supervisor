@@ -1,0 +1,40 @@
+先在python2下安装supervisor
+由于supervisor只支持python2.*,在python3.*下的安装方法如下：
+下载supervisor安装包
+解压supervisor
+进入supervisor目录文件夹
+python2 setup.py install
+
+
+[group:autobiz]
+programs=bizhq,bizdq,bizfb
+
+[program:bizhq]
+command=python /mnt/tainiu.www/service/BizHq.py
+directory=/mnt/tainiu.www
+user=root
+autostart=true
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/mnt/log/autobiz_hq.log
+loglevel=info
+
+[program:bizdq]
+command=python /mnt/tainiu.www/service/BizDq.py
+directory=/mnt/tainiu.www
+user=root
+autostart=true
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/mnt/log/autobiz_dq.log
+loglevel=info
+
+[program:bizfb]
+command=python /mnt/tainiu.www/service/BizFb.py
+directory=/mnt/tainiu.www
+user=root
+autostart=true
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/mnt/log/autobiz_fb.log
+loglevel=info
